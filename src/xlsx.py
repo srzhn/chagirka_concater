@@ -8,8 +8,10 @@ from typing import Optional
 from datetime import datetime
 
 
-def make_qr(data, path):
-    img = qrcode.make(data=data, border=1)
+def make_qr(data, path, border=1, box_size=3):
+    img = qrcode.make(data=data, 
+                      border=border, 
+                      box_size=box_size)
     img.save(path)
     return path
 
@@ -22,7 +24,8 @@ def create_xlsx(labels: pd.Series,
 
 def create_xlsx_with_qrs(labels: pd.Series,
                          filepath: Path,
-                         sheetname: str = 'QRcodes'):
+                         sheetname: str = 'QRcodes',
+                         qr_size=3):
     workbook = xlsxwriter.Workbook(filepath)
     worksheet = workbook.add_worksheet(sheetname)
 
@@ -30,7 +33,7 @@ def create_xlsx_with_qrs(labels: pd.Series,
     with TemporaryDirectory() as tempdir:
         for index, value in enumerate(labels.values, 1):
             qr_path = Path(tempdir, f"qrcode_{index}.png")
-            make_qr(data=value, path=qr_path)
+            make_qr(data=value, path=qr_path, box_size=qr_size)
 
             # Пишем label в первый столбец
             worksheet.write(f'A{index}', value)
