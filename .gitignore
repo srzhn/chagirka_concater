@@ -120,3 +120,6 @@ node_modules/
 .env.production.local
 
 .ipynb_checkpoints
+examples/
+results/
+*.ipynb
