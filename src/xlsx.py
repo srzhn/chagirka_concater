@@ -40,6 +40,8 @@ def create_xlsx_with_qrs(labels: pd.Series,
 
             # Вставляем qr-код во второй столбец
             worksheet.insert_image(f'B{index}', qr_path)
+        
+        worksheet.autofit()
 
         # Пока существует папка - закрываем xlsx.
         workbook.close()
