@@ -8,11 +8,11 @@ from typing import Optional
 from datetime import datetime
 
 
-def make_qr(data, path, border=1, box_size=3):
+def make_qr(data: str, path: Path, border: float=1, box_size: float=3):
     img = qrcode.make(data=data, 
                       border=border, 
                       box_size=box_size)
-    img.save(path)
+    img.save(str(path.absolute()))
     return path
 
 
