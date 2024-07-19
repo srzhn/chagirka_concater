@@ -1,7 +1,4 @@
-argparse
 openpyxl==3.1.0
 pandas==1.4.3
-pathlib==1.0.1
-tempfile
 xlsxwriter
-qrcode==7.4.2
+qrcode
