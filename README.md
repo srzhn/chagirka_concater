@@ -6,6 +6,11 @@
 2. install libraries from `requirements.txt`: 
 `python -m pip install -r requirements.txt`
 
+
+## Colab
+
+Ссылка на [colab-notebook](https://colab.research.google.com/drive/1A69cbJopPOcaNy94iUfKdwxoFV8S-2Br?usp=sharing) для запуска в интернете. Для использования необходимо склонировать в свой Google Drive.
+
 ## Usage
 
 ### Генерация лэйблов с qr-кодами.
@@ -23,6 +28,7 @@
 
 - `-p/--path` - Путь до файла. Обрабатывается только первый лист в файле.
 - `-o/--filename` - свое название файла. Результат будет лежать в той же папке.
+
 
 
 ## КАК НАСТРОИТЬ ПЕЧАТЬ ДЛЯ ПРИНТЕРА.
