@@ -9,10 +9,10 @@ def main():
     parser = argparse.ArgumentParser(
         prog='chagirka_labels_converter')
 
-    parser.add_argument('-p', '--path', required=True)
-    parser.add_argument('-o', '--filename')
-    parser.add_argument('-q', '--no-qrcode', action='store_true')
-    parser.add_argument('-c', '--no-colnames', action='store_true')
+    parser.add_argument('-p', '--path', required=True, help="Путь до эксель-файла. Желательно взять его из адресной строки в проводнике.")
+    parser.add_argument('-o', '--filename', help="Название конечного файла.")
+    parser.add_argument('-q', '--no-qrcode', action='store_true', help="Если есть, то не будут генерироваться QR-коды.")
+    parser.add_argument('-c', '--no-colnames', action='store_true', help="Если есть, то в сгенерированном лэйбл не будут добавляться названия колонок.")
 
     path = Path(parser.parse_args().path)
     filename = parser.parse_args().filename
@@ -45,9 +45,9 @@ def main():
 
     # Сохраняем лэйблы в новый файл.
     if skip_qr_codes:
-        create_xlsx(labels, result_xlsx_path, sheetname='Labels')
+        create_xlsx(labels, result_xlsx_path, sheet_name='Labels')
     else:
-        create_xlsx_with_qrs(labels, result_xlsx_path, sheetname='QRcodes', qr_size=3)
+        create_xlsx_with_qrs(labels, result_xlsx_path, sheet_name='QRcodes', qr_size=3)
 
     print(f'Done. \"{result_xlsx_path.absolute()}\"')
     return 0

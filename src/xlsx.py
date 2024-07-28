@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import qrcode
 # from hashlib import sha256
-from typing import Optional
+from typing import Optional, Union
 from datetime import datetime
 
 
@@ -15,19 +15,51 @@ def make_qr(data: str, path: Path, border: float=1, box_size: float=3):
     img.save(str(path.absolute()))
     return path
 
+def prepare_dataframe(data):
+    columns = ['[site]', '[prefix]', '[point_id]', '[point_sub_id]', '[layer]', '[sublayer]', '[tag]', '[data_x]', '[data_y]', '[data_z]']
+    
+    df = data.loc[:, columns]
+    
+    df.columns = [col[1:-1] for col in df.columns]
+    
+    df['data_x'] = df['data_x'].round(2)
+    df['data_y'] = df['data_y'].round(2)
+    df['data_z'] = df['data_z'].round(2)
+    
+    df = df.groupby(['site', 'prefix', 'point_id']).first().reset_index().drop(columns=['point_sub_id'])
+    
+    column_mapper = {
+                     'point_id': 'N',
+                     'layer': 'L',
+                     'sublayer': 'h',
+                    #  'tag': 'Unnamed 0',
+                    #  'site': 'Unnamed 1',
+                    #  'tag': '',
+                    #  'site': '',
+                    #  'prefix': '',
+                     'data_x': 'X',
+                     'data_y': 'Y',
+                     'data_z': 'Z',
+                     }
+    df = df.rename(column_mapper, axis=1)
+    
+    # df.to_excel('results/2024-07-28_test.xlsx', index=0)
+    
+    return df
 
-def create_xlsx(labels: pd.Series,
+
+def create_xlsx(data: Union[pd.Series, pd.DataFrame],
                 filepath: Path,
-                sheetname: str = 'Labels'):
-    labels.to_excel(filepath, index=0, sheet_name=sheetname)
+                sheet_name: str = 'Labels'):
+    data.to_excel(filepath, index=0, sheet_name=sheet_name)
 
 
 def create_xlsx_with_qrs(labels: pd.Series,
                          filepath: Path,
-                         sheetname: str = 'QRcodes',
+                         sheet_name: str = 'QRcodes',
                          qr_size=3):
     workbook = xlsxwriter.Workbook(filepath)
-    worksheet = workbook.add_worksheet(sheetname)
+    worksheet = workbook.add_worksheet(sheet_name)
 
     # Сформированные qr-коды сохраняем во временную папку.
     with TemporaryDirectory() as tempdir:
